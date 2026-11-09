@@ -51,7 +51,24 @@ if(USE_MPI)
 endif()
 
 if(USE_CUDA)
+    if(USE_ICC AND NOT CUDA_HOST_COMPILER)
+        # nvcc frequently rejects (newer or older) Intel compilers as host compiler,
+        # so compile the host part of the .cu files with GCC instead. The .cu files
+        # contain no OpenMP and only thin kernel-launch wrappers, so this does not
+        # affect performance. Override with -DCUDA_HOST_COMPILER=<path>.
+        find_program(HIPARTI_CUDA_GXX g++)
+        if(NOT HIPARTI_CUDA_GXX)
+            message(FATAL_ERROR "USE_ICC with USE_CUDA needs g++ as nvcc host compiler; set -DCUDA_HOST_COMPILER=<path>")
+        endif()
+        set(CUDA_HOST_COMPILER "${HIPARTI_CUDA_GXX}" CACHE FILEPATH "Host side compiler used by NVCC")
+        set(HIPARTI_CUDA_NO_PROPAGATE ON)
+    endif()
     find_package(CUDA REQUIRED)
+    if(HIPARTI_CUDA_NO_PROPAGATE)
+        # Intel-specific flags (e.g. -qopenmp) in CMAKE_C_FLAGS are not understood by g++
+        set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+        set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -Xcompiler -O3")
+    endif()
     add_definitions(-DHIPARTI_USE_CUDA)
     link_libraries(${CUDA_cusparse_LIBRARY})
     link_libraries(${CUDA_cusolver_LIBRARY})

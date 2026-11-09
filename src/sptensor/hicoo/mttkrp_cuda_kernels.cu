@@ -331,7 +331,7 @@ int ptiMTTKRPKernelHiCOO(
 
     break;
     }   // End switch nmodes
-    result = cudaThreadSynchronize();
+    result = cudaDeviceSynchronize();
     pti_CheckCudaError(result != 0, "CUDA HiCOO SpTns MTTKRP");
 
     return 0;

@@ -321,7 +321,7 @@ int ptiCudaMTTKRP(
             dev_scratch,
             block_offset);
     }   // End switch nmodes
-    result = cudaThreadSynchronize();
+    result = cudaDeviceSynchronize();
     pti_CheckCudaError(result != 0, "CUDA SpTns MTTKRP");
 
   } // End loop block_offset
@@ -421,7 +421,7 @@ int ptiCudaMTTKRPDevice(
         dev_scratch,
         block_offset
         );
-    result = cudaThreadSynchronize();
+    result = cudaDeviceSynchronize();
     pti_CheckCudaError(result != 0, "CUDA SpTns MTTKRP");
   }
 

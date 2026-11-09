@@ -225,7 +225,7 @@ int ptiCudaSparseTensorMulMatrixOneKernel(
             U_val, U->nrows, U->ncols, U->stride);
         break; 
     }
-    result = cudaThreadSynchronize();
+    result = cudaDeviceSynchronize();
     pti_CheckCudaError(result != 0, "CUDA SpTns * Mtx kernel");
 
     ptiStopTimer(timer);

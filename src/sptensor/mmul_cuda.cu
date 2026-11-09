@@ -123,7 +123,7 @@ int ptiCudaSparseTensorMulMatrix(
                 block_offset
             );
         }
-        result = cudaThreadSynchronize();
+        result = cudaDeviceSynchronize();
         pti_CheckCudaError(result != 0, "CUDA SpTns * Mtx kernel");
     }
 

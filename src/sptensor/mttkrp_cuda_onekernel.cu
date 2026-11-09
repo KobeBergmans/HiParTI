@@ -372,7 +372,7 @@ int ptiCudaMTTKRPOneKernel(
         //     dev_scratch,
         //     block_offset);
     }   // End switch nmodes
-    result = cudaThreadSynchronize();
+    result = cudaDeviceSynchronize();
     pti_CheckCudaError(result != 0, "CUDA SpTns MTTKRP");
 
 
