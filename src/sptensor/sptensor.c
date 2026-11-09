@@ -230,10 +230,16 @@ void ptiSparseTensorShuffleIndices(ptiSparseTensor *tsr, ptiIndex ** map_inds) {
 void ptiSparseTensorInvMap(ptiSparseTensor *tsr, ptiIndex ** map_inds)
 {
     ptiIndex ** tmp_map_inds = (ptiIndex **)malloc(tsr->nmodes * sizeof(ptiIndex**));
-    pti_CheckOSError(!tmp_map_inds, "ptiSparseTensorInvMap");
+    if(!tmp_map_inds) {
+        perror("ptiSparseTensorInvMap");
+        abort();
+    }
     for(ptiIndex m = 0; m < tsr->nmodes; ++m) {
         tmp_map_inds[m] = (ptiIndex *)malloc(tsr->ndims[m] * sizeof (ptiIndex));
-        pti_CheckError(!tmp_map_inds[m], "ptiSparseTensorInvMap", NULL);
+        if(!tmp_map_inds[m]) {
+            perror("ptiSparseTensorInvMap");
+            abort();
+        }
     }
 
     ptiIndex tmp_ind;

@@ -444,7 +444,6 @@ int main(int argc, char ** argv) {
 
         if(fo != NULL) {
             ptiAssert(ptiDumpMatrix(U[nmodes], fo) == 0);
-            fclose(fo);
         }
 
     } // End execute a specified mode
