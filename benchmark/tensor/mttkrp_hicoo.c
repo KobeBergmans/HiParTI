@@ -41,7 +41,8 @@ void print_usage(int argc, char ** argv) {
 }
 
 int main(int argc, char ** argv) {
-    FILE *fi = NULL, *fo = NULL;
+    char const *ifname = NULL;
+    FILE *fo = NULL;
     ptiSparseTensor tsr;
     ptiMatrix ** U;
     ptiSparseTensorHiCOO hitsr;
@@ -89,8 +90,7 @@ int main(int argc, char ** argv) {
         }
         switch(c) {
         case 'i':
-            fi = fopen(optarg, "r");
-            ptiAssert(fi != NULL);
+            ifname = optarg;
             break;
         case 'o':
             fo = fopen(optarg, "w");
@@ -132,9 +132,8 @@ int main(int argc, char ** argv) {
     }
 
 
-    ptiAssert(ptiLoadSparseTensor(&tsr, 1, fi) == 0);
+    ptiAssert(ptiLoadSparseTensor(&tsr, 1, ifname) == 0);
     // ptiSparseTensorSortIndex(&tsr, 1);
-    fclose(fi);
     ptiSparseTensorStatus(&tsr, stdout);
     // ptiAssert(ptiDumpSparseTensor(&tsr, 0, stdout) == 0);
 

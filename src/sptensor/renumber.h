@@ -59,3 +59,7 @@ static inline void insertSetBefore(setStruct *csets, ptiIndex newset, ptiIndex a
     csets[aset].prev = newset;
 }
 
+
+/* Defined in orderit.c */
+void initColDLL(colStruct *clms, ptiIndex n);
+void initSetDLL(setStruct *csets, ptiIndex n);

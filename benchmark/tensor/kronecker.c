@@ -20,23 +20,15 @@
 #include <HiParTI.h>
 
 int main(int argc, char *argv[]) {
-    FILE *fa, *fb, *fo;
+    FILE *fo;
     ptiSparseTensor a, b, out;
 
     if(argc != 4) {
         printf("Usage: %s a b out\n\n", argv[0]);
         return 1;
     }
-
-    fa = fopen(argv[1], "r");
-    ptiAssert(fa != NULL);
-    ptiAssert(ptiLoadSparseTensor(&a, 1, fa) == 0);
-    fclose(fa);
-
-    fb = fopen(argv[2], "r");
-    ptiAssert(fb != NULL);
-    ptiAssert(ptiLoadSparseTensor(&b, 1, fb) == 0);
-    fclose(fb);
+    ptiAssert(ptiLoadSparseTensor(&a, 1, argv[1]) == 0);
+    ptiAssert(ptiLoadSparseTensor(&b, 1, argv[2]) == 0);
 
     ptiAssert(ptiSparseTensorKroneckerMul(&out, &a, &b) == 0);
 

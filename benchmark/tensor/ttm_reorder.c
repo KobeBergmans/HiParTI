@@ -35,7 +35,7 @@ void print_usage(char ** argv) {
     printf("\n");
 }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char *argv[]) {
     char ifname[1000];
     FILE *fo = NULL;
     ptiSparseTensor X, spY;
