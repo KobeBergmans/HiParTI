@@ -17,7 +17,7 @@ option(BUILD_SHARED "Build shared library" ON)
 
 # Define data types
 add_definitions(-DHIPARTI_INDEX_TYPEWIDTH=32)
-add_definitions(-DHIPARTI_VALUE_TYPEWIDTH=32)
+add_definitions(-DHIPARTI_VALUE_TYPEWIDTH=64)
 add_definitions(-DHIPARTI_ELEMENT_INDEX_TYPEWIDTH=8)
 
 # Check for implementations

@@ -25,7 +25,7 @@
  * Define types, TODO: check the bit size of them, add branch for different settings
  */
 #define HIPARTI_INDEX_TYPEWIDTH 32
-#define HIPARTI_VALUE_TYPEWIDTH 32
+#define HIPARTI_VALUE_TYPEWIDTH 64
 #define HIPARTI_ELEMENT_INDEX_TYPEWIDTH 8
 
 #if HIPARTI_INDEX_TYPEWIDTH == 32
