@@ -825,6 +825,8 @@ __global__ void pti_MTTKRPKernelRankSplitHiCOORB_3D_MatrixBlocked_SM(
 
                 }   // End loop entries
 
+                /* Wait until all threads have added their nonzeros to shared memory */
+                __syncthreads();
                 /* Store back mats[nmodes] from shared memory */
                 if (tidy < sb_size) {
                     for(ptiIndex l=0; l<num_loops_r; ++l) {
@@ -836,6 +838,8 @@ __global__ void pti_MTTKRPKernelRankSplitHiCOORB_3D_MatrixBlocked_SM(
                         atomicAdd( &(blocked_mvals[tidy * stride + r]),  sm_blocked_mvals[tidy * stride + r] );
                     }
                 }
+                /* Wait until shared memory has been read before the next block overwrites it */
+                __syncthreads();
 
 
             } else { /* Not enough matrix reuse */
@@ -901,8 +905,8 @@ __global__ void pti_MTTKRPKernelRankSplitHiCOORB_3D_MatrixBlocked_AllSM(
     /* Data in shared memory */
     extern __shared__ ptiValue mempool[];
     ptiValue * sm_blocked_mvals = mempool;
-    ptiValue * sm_blocked_times_mat_1 = mempool + sb_size * R * sizeof(ptiValue);
-    ptiValue * sm_blocked_times_mat_2 = sm_blocked_times_mat_1 + sb_size * R * sizeof(ptiValue);
+    ptiValue * sm_blocked_times_mat_1 = mempool + sb_size * R;   /* offset in elements, not bytes */
+    ptiValue * sm_blocked_times_mat_2 = sm_blocked_times_mat_1 + sb_size * R;   /* offset in elements, not bytes */
 
     ptiNnzIndex const all_nblocks = blength;
     const ptiIndex tidx = threadIdx.x;
@@ -983,6 +987,8 @@ __global__ void pti_MTTKRPKernelRankSplitHiCOORB_3D_MatrixBlocked_AllSM(
 
                 }   // End loop entries
 
+                /* Wait until all threads have added their nonzeros to shared memory */
+                __syncthreads();
                 /* Store back mats[nmodes] from shared memory */
                 if (tidy < sb_size) {
                     for(ptiIndex l=0; l<num_loops_r; ++l) {
@@ -994,6 +1000,8 @@ __global__ void pti_MTTKRPKernelRankSplitHiCOORB_3D_MatrixBlocked_AllSM(
                         atomicAdd( &(blocked_mvals[tidy * stride + r]),  sm_blocked_mvals[tidy * R + r] );
                     }
                 }
+                /* Wait until shared memory has been read before the next block overwrites it */
+                __syncthreads();
 
 
             } else { /* Not enough matrix reuse */
